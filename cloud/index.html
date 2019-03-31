@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aoe2Tools "Cloud Verification"</title>
+<style>
+* {
+	box-sizing:border-box;
+}
+
+html, body, .container {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-image: linear-gradient(#ccc, #999);
+	font-family: "Comic Sans", "Comic Sans MS", sans-serif;
+}
+
+.container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.wrapper {
+	max-width: 90%;
+}
+
+input {
+	padding: .6rem;
+	font-size: 120%;
+	margin-bottom: 1rem;
+}
+
+button{
+	display: block;
+	width: 100%;
+	color: #333;
+	background-color: #fc0;
+	padding: 1rem;
+	border: none;
+	font-family: "Comic Sans", "Comic Sans MS", sans-serif;
+	font-size: 120%;
+	font-weight: bold;
+}
+
+.hidden {
+	display: none;
+}
+</style>
+</head>
+<body>
+<div class="container">
+	<div class="wrapper">
+		<h1>Aoe2Tools "Cloud Verification"</h1>
+		<div style="margin-bottom: 1rem;">
+			<label for="code" style="display: block;">Paste your Aoe2Cloud code here:</label>
+			<input type="text" id="code" style="width: 100%;">
+			<button onclick="generate()">Extract key</button>
+		</div>
+		<div id="resultDiv" class="hidden">
+			<label for="result" style="display: block;">Your key:</label>
+			<input type="text" id="result" style="width: 100%;"/>
+		</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript">
+var mapping = {
+	"A":"T",
+	"B":"T",
+	"C":"4",
+	"D":"4",
+	"E":"4",
+	"F":"F",
+	"G":"F",
+	"H":"F",
+	"I":"7",
+	"J":"7",
+	"K":"7",
+	"L":"U",
+	"M":"U",
+	"N":"U",
+	"O":"3",
+	"P":"3",
+	"Q":"3",
+	"R":"B",
+	"S":"U",
+	"T":"B",
+	"U":"U",
+	"V":"9",
+	"W":"9",
+	"X":"C",
+	"Y":"F",
+	"Z":"T",
+	"a":"T",
+	"b":"T",
+	"c":"4",
+	"d":"4",
+	"e":"4",
+	"f":"F",
+	"g":"C",
+	"h":"F",
+	"i":"7",
+	"j":"7",
+	"k":"7",
+	"l":"U",
+	"m":"B",
+	"n":"9",
+	"o":"3",
+	"p":"3",
+	"q":"3",
+	"r":"B",
+	"s":"B",
+	"t":"B",
+	"u":"9",
+	"v":"9",
+	"w":"9",
+	"x":"C",
+	"y":"C",
+	"z":"T",
+	"0":"C",
+	"1":"C",
+	"2":"Y",
+	"3":"X",
+	"4":"R",
+	"5":"Y",
+	"6":"S",
+	"7":"X",
+	"8":"S",
+	"9":"R"
+};
+
+function generate(){
+	let code = document.getElementById('code').value;
+	let decoded = atob(code);
+	let transformed = '';
+	for(let c of decoded){
+		if(c in mapping){
+			transformed += mapping[c];
+		} else {
+			transformed += c;
+		}
+	}
+	document.getElementById('result').value = transformed;
+	document.getElementById('resultDiv').classList.remove('hidden');
+}
+</script>
+</html>
