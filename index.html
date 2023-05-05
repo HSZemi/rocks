@@ -9,6 +9,9 @@ html, body, .container {
 	height: 100%;
 	margin: 0;
 	padding: 0;
+	font-family: sans-serif;
+	font-size: 14pt;
+	color: #333;
 }
 
 body {
@@ -19,6 +22,18 @@ body {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex-direction: column;
+}
+
+#shortcode {
+	margin-top: 2rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	gap: 10px;
+	border: 1px solid gray;
+	padding: .5rem;
 }
 
 .wrapper {
@@ -32,6 +47,42 @@ img {
 #logo {
 	display: block;
 }
+
+input {
+	padding: 8px 16px;
+	line-height: 25px;
+	font-size: 14px;
+	font-weight: 500;
+	font-family: inherit;
+    border: 1px solid #CDD9ED;
+    background: #fff;
+    text-align: center;
+}
+
+button {
+	cursor: pointer;
+	padding: 8px 16px;
+	line-height: 25px;
+	font-size: 14px;
+	font-weight: normal;
+	font-family: inherit;
+    color: #fff;
+    background: #666;
+    text-align: center;
+}
+
+#success {
+	margin-top: .5rem;
+	color: #363;
+}
+
+#error {
+	color: #a33;
+}
+
+.big{
+	font-size: 5rem;
+}
 </style>
 </head>
 <body>
@@ -39,6 +90,44 @@ img {
 	<div class="wrapper">
 		<img id="logo" src="aoe2.svg"/>
 	</div>
+	<div id="shortcode">
+		<label for="aoe2code-input">
+			Insert game code
+		</label>
+		<input type="text" id="aoe2code-input" placeholder="aoe2de://0/123456789"/>
+		<button onclick="generateAndCopy()">Generate URL and copy to clipboard</button>
+	</div>
+		<span id="success"></span>
+		<span id="error"></span>
 </div>
 </body>
+
+<script type="text/javascript">
+const generateAndCopy = async () => {
+	try {
+		document.getElementById('success').innerHTML = '';
+		document.getElementById('error').innerText = '';
+		const regex = /^aoe2de:\/\/(\d\/\d+)$/
+		const value = document.getElementById('aoe2code-input').value.trim();
+		const matches = value.match(regex);
+		if (matches) {
+			const text = 'https://aoe2.rocks#' + matches[1];
+			await navigator.clipboard.writeText(text);
+			document.getElementById('success').innerHTML = `Copied <code>${text}</code> to clipboard.`;
+			document.getElementById('aoe2code-input').value = '';
+		} else {
+			document.getElementById('error').innerText = 'Wrong format. Make sure the input looks like aoe2de://0/123456789';
+		}
+	} catch (err) {
+		document.getElementById('error').innerText = err.toString();
+	}
+}
+
+const regex = /^#(\d\/\d+)$/;
+if (window.location.hash && regex.test(window.location.hash)){
+	document.getElementById('shortcode').innerHTML = '<div class="big">Opening Game in Age of Empires 2 DE…</div>';
+	window.location.replace("aoe2de://" + window.location.hash.substring(1));
+}
+</script>
+
 </html>
